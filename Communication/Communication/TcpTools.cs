@@ -11,6 +11,14 @@ namespace Communication
     public class TcpTools
     {
 
+        /// <summary>
+        /// 读取
+        /// </summary>
+        /// <param name="destBuf"></param>
+        /// <param name="netStream"></param>
+        /// <param name="start"></param>
+        /// <param name="toReadLen"></param>
+        /// <returns></returns>
         public static bool OffsetRead(byte[] destBuf, NetworkStream netStream, int start, int toReadLen)
         {
             try
@@ -37,6 +45,12 @@ namespace Communication
 
         }
 
+        /// <summary>
+        /// 发送数据包
+        /// </summary>
+        /// <param name="sendData">待发送数据</param>
+        /// <param name="clientStream">网络流</param>
+        /// <returns></returns>
         public static bool SendPackData(byte[] sendData, NetworkStream clientStream)
         {
             try
@@ -59,6 +73,12 @@ namespace Communication
             }
         }
 
+        /// <summary>
+        /// 接收数据包
+        /// </summary>
+        /// <param name="revBuffer">接收的数据</param>
+        /// <param name="clientStream">网络流</param>
+        /// <returns></returns>
         public static bool RevPackData(out byte[] revBuffer, NetworkStream clientStream)
         {
             revBuffer = null;
@@ -69,8 +89,7 @@ namespace Communication
                 if (!TcpTools.OffsetRead(headerBuf, clientStream, 0, 4))
                     return false;
                 Int32 dataLen = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headerBuf, 0));
-                if (dataLen <= 0)
-                  
+                if (dataLen <= 0)               
                     return false;
                 byte[] buffer = new byte[dataLen];
                 if (!TcpTools.OffsetRead(buffer, clientStream, 0, dataLen))
